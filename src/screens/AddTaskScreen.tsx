@@ -5,8 +5,6 @@ import { Layout } from "../components/layout/Layout";
 import { ScreenHeader } from "../components/layout/ScreenHeader";
 import { RootStackScreenProps } from "../navigation/types";
 
-// Form to create a new task. Validation + actually saving the task come later;
-// for now the buttons just return to the list.
 export function AddTaskScreen({ navigation }: RootStackScreenProps<"AddTask">) {
   const goBack = () => navigation.goBack();
 
@@ -18,9 +16,10 @@ export function AddTaskScreen({ navigation }: RootStackScreenProps<"AddTask">) {
         contentContainerStyle={{ padding: 16, gap: 24 }}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Intro */}
         <View>
-          <Text style={{ fontSize: 30, fontWeight: "700", color: colors.primary }}>
+          <Text
+            style={{ fontSize: 30, fontWeight: "700", color: colors.primary }}
+          >
             New Journey
           </Text>
           <Text style={{ fontSize: 14, color: colors.onSurfaceVariant }}>
@@ -28,9 +27,14 @@ export function AddTaskScreen({ navigation }: RootStackScreenProps<"AddTask">) {
           </Text>
         </View>
 
-        {/* Title field */}
         <View style={{ gap: 8 }}>
-          <Text style={{ fontSize: 12, fontWeight: "600", color: colors.onSurfaceVariant }}>
+          <Text
+            style={{
+              fontSize: 12,
+              fontWeight: "600",
+              color: colors.onSurfaceVariant,
+            }}
+          >
             Task Title
           </Text>
           <TextInput
@@ -49,9 +53,14 @@ export function AddTaskScreen({ navigation }: RootStackScreenProps<"AddTask">) {
           />
         </View>
 
-        {/* Description field */}
         <View style={{ gap: 8 }}>
-          <Text style={{ fontSize: 12, fontWeight: "600", color: colors.onSurfaceVariant }}>
+          <Text
+            style={{
+              fontSize: 12,
+              fontWeight: "600",
+              color: colors.onSurfaceVariant,
+            }}
+          >
             Description
           </Text>
           <TextInput
@@ -73,7 +82,6 @@ export function AddTaskScreen({ navigation }: RootStackScreenProps<"AddTask">) {
           />
         </View>
 
-        {/* Actions */}
         <View style={{ gap: 12, paddingTop: 16 }}>
           <Pressable
             onPress={goBack}
@@ -88,14 +96,23 @@ export function AddTaskScreen({ navigation }: RootStackScreenProps<"AddTask">) {
             }}
           >
             <MaterialIcons name="add-task" size={20} color={colors.white} />
-            <Text style={{ fontSize: 16, fontWeight: "700", color: colors.white }}>
+            <Text
+              style={{ fontSize: 16, fontWeight: "700", color: colors.white }}
+            >
               Create Task
             </Text>
           </Pressable>
 
           <Pressable
             onPress={goBack}
-            style={{ height: 48, alignItems: "center", justifyContent: "center" }}
+            style={{
+              height: 48,
+              alignItems: "center",
+              justifyContent: "center",
+              borderWidth: 1,
+              borderColor: colors.outlineVariant,
+              borderRadius: 12,
+            }}
           >
             <Text
               style={{

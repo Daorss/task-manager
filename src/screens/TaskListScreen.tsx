@@ -101,7 +101,11 @@ export function TaskListScreen({
     <Layout>
       <AppBar />
       <View style={{ flex: 1 }}>
-        <TaskList tasks={SAMPLE_TASKS} header={<ListHeader />} />
+        <TaskList
+          tasks={SAMPLE_TASKS}
+          header={<ListHeader />}
+          onTaskPress={(task) => navigation.navigate("TaskDetails", { task })}
+        />
         <Fab onPress={() => navigation.navigate("AddTask")} />
       </View>
     </Layout>

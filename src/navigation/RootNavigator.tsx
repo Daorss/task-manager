@@ -13,7 +13,11 @@ export function RootNavigator() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="TaskList" component={TaskListScreen} />
       <Stack.Screen name="AddTask" component={AddTaskScreen} />
-      <Stack.Screen name="TaskDetails" component={TaskDetailsScreen} />
+      <Stack.Screen
+        name="TaskDetails"
+        component={TaskDetailsScreen}
+        options={{ presentation: "modal" }}
+      />
     </Stack.Navigator>
   );
 }

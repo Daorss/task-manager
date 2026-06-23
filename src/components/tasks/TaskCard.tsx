@@ -5,12 +5,19 @@ import { Task } from "../../types/task";
 import { Badge } from "../common/Badge";
 
 // A single task row: checkbox, title, status badge, description, date, delete.
-// Presentational only — the press handlers are wired up later.
-export function TaskCard({ task }: { task: Task }) {
+// Tapping the card opens its details; the checkbox/delete handlers come later.
+export function TaskCard({
+  task,
+  onPress,
+}: {
+  task: Task;
+  onPress?: () => void;
+}) {
   const done = task.completed;
 
   return (
-    <View
+    <Pressable
+      onPress={onPress}
       style={{
         flexDirection: "row",
         alignItems: "center",
@@ -85,6 +92,6 @@ export function TaskCard({ task }: { task: Task }) {
       <Pressable style={{ padding: 8 }}>
         <MaterialIcons name="delete" size={22} color={colors.outline} />
       </Pressable>
-    </View>
+    </Pressable>
   );
 }

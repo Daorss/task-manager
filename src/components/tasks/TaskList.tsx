@@ -10,15 +10,19 @@ import { TaskCard } from "./TaskCard";
 export function TaskList({
   tasks,
   header,
+  onTaskPress,
 }: {
   tasks: Task[];
   header?: ReactElement;
+  onTaskPress?: (task: Task) => void;
 }) {
   return (
     <FlatList
       data={tasks}
       keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <TaskCard task={item} />}
+      renderItem={({ item }) => (
+        <TaskCard task={item} onPress={() => onTaskPress?.(item)} />
+      )}
       ListHeaderComponent={header}
       ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
       ListEmptyComponent={<EmptyState />}
