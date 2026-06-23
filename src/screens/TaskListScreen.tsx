@@ -2,10 +2,13 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 import { colors } from "../constants/colors";
 import { Task } from "../types/task";
+import { AppBar } from "../components/layout/AppBar";
 import { Fab } from "../components/layout/Fab";
+import { Layout } from "../components/layout/Layout";
 import { SearchBar } from "../components/tasks/SearchBar";
 import { FilterChips } from "../components/tasks/FilterChips";
 import { TaskList } from "../components/tasks/TaskList";
+import { RootStackScreenProps } from "../navigation/types";
 
 // Placeholder data so the layout is visible. Replaced with real state/API later.
 const SAMPLE_TASKS: Task[] = [
@@ -91,11 +94,16 @@ function ListHeader() {
 }
 
 // Home screen: the task list with its header and the add-task FAB.
-export function TaskListScreen() {
+export function TaskListScreen({
+  navigation,
+}: RootStackScreenProps<"TaskList">) {
   return (
-    <View style={{ flex: 1 }}>
-      <TaskList tasks={SAMPLE_TASKS} header={<ListHeader />} />
-      <Fab />
-    </View>
+    <Layout>
+      <AppBar />
+      <View style={{ flex: 1 }}>
+        <TaskList tasks={SAMPLE_TASKS} header={<ListHeader />} />
+        <Fab onPress={() => navigation.navigate("AddTask")} />
+      </View>
+    </Layout>
   );
 }

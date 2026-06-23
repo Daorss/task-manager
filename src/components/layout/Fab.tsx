@@ -2,9 +2,10 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Pressable } from "react-native";
 import { colors } from "../../constants/colors";
 
-export function Fab() {
+export function Fab({ onPress }: { onPress?: () => void }) {
   return (
     <Pressable
+      onPress={onPress}
       style={{
         position: "absolute",
         bottom: 24,

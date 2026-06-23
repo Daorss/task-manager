@@ -1,12 +1,14 @@
-import { Layout } from "./src/components/layout/Layout";
-import { TaskListScreen } from "./src/screens/TaskListScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { RootNavigator } from "./src/navigation/RootNavigator";
 
-// App entry point. For now it renders the task list inside the app shell.
-// Navigation between screens (list -> add -> details) is added later.
+// App entry point: safe-area + navigation providers wrap the screen stack.
 export default function App() {
   return (
-    <Layout>
-      <TaskListScreen />
-    </Layout>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
