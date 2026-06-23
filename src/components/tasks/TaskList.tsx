@@ -1,5 +1,10 @@
 import { ReactElement } from "react";
-import { FlatList, View } from "react-native";
+import { FlatList } from "react-native";
+import Animated, {
+  FadeInDown,
+  FadeOutRight,
+  LinearTransition,
+} from "react-native-reanimated";
 import { Task } from "../../types/task";
 import { EmptyState } from "../common/EmptyState";
 import { TaskCard } from "./TaskCard";
@@ -27,15 +32,21 @@ export function TaskList({
       data={tasks}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <TaskCard
-          task={item}
-          onPress={() => onTaskPress?.(item)}
-          onToggle={() => onToggleTask?.(item.id)}
-          onDelete={() => onDeleteTask?.(item.id)}
-        />
+        <Animated.View
+          entering={FadeInDown.duration(250)}
+          exiting={FadeOutRight.duration(200)}
+          layout={LinearTransition}
+          style={{ marginBottom: 12 }}
+        >
+          <TaskCard
+            task={item}
+            onPress={() => onTaskPress?.(item)}
+            onToggle={() => onToggleTask?.(item.id)}
+            onDelete={() => onDeleteTask?.(item.id)}
+          />
+        </Animated.View>
       )}
       ListHeaderComponent={header}
-      ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
       ListEmptyComponent={<EmptyState onCreate={onCreateTask} />}
       contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 120 }}
       showsVerticalScrollIndicator={false}

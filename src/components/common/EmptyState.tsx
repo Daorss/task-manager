@@ -1,5 +1,6 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
+import Animated, { FadeInDown } from "react-native-reanimated";
 import { colors } from "../../constants/colors";
 
 // Shown when the task list is empty — nudges the user to add their first task.
@@ -13,7 +14,10 @@ export function EmptyState({
   onCreate?: () => void;
 }) {
   return (
-    <View style={{ alignItems: "center", paddingVertical: 64, gap: 8 }}>
+    <Animated.View
+      entering={FadeInDown.duration(500)}
+      style={{ alignItems: "center", paddingVertical: 64, gap: 8 }}
+    >
       {/* Illustration */}
       <View
         style={{
@@ -56,6 +60,6 @@ export function EmptyState({
           </Text>
         </Pressable>
       )}
-    </View>
+    </Animated.View>
   );
 }
