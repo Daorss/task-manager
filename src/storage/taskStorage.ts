@@ -4,14 +4,15 @@ import { Task } from "../types/task";
 // One key holds the whole task list as a JSON string.
 const STORAGE_KEY = "tasks";
 
-// Read the saved tasks. Returns [] on first launch or if anything goes wrong.
-export async function loadTasks(): Promise<Task[]> {
+// Read the saved tasks. Returns null when nothing has ever been saved (so the
+// caller knows it's a first launch and can seed), or the saved array otherwise.
+export async function loadTasks(): Promise<Task[] | null> {
   try {
     const raw = await AsyncStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as Task[]) : [];
+    return raw ? (JSON.parse(raw) as Task[]) : null;
   } catch (e) {
     console.warn("Failed to load tasks", e);
-    return [];
+    return null;
   }
 }
 

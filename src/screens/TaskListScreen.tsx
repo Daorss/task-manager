@@ -1,44 +1,44 @@
-import { MaterialIcons } from "@expo/vector-icons";
 import { useMemo, useState } from "react";
-import { ActivityIndicator, Pressable, Text, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { colors } from "../constants/colors";
 import { AppBar } from "../components/layout/AppBar";
 import { Fab } from "../components/layout/Fab";
 import { Layout } from "../components/layout/Layout";
 import { SearchBar } from "../components/tasks/SearchBar";
 import { FilterChips, TaskFilter } from "../components/tasks/FilterChips";
+import { ProgressCard } from "../components/tasks/ProgressCard";
+import { QuoteCard } from "../components/tasks/QuoteCard";
 import { TaskList } from "../components/tasks/TaskList";
 import { useTasks } from "../hooks/useTasks";
 import { RootStackScreenProps } from "../navigation/types";
 
 // Everything above the task cards: page title, search, filters, tip card.
 function ListHeader({
+  total,
+  completed,
   search,
   onSearch,
   filter,
   onFilter,
-  showTip,
-  onDismissTip,
+  showQuote,
+  onDismissQuote,
 }: {
+  total: number;
+  completed: number;
   search: string;
   onSearch: (text: string) => void;
   filter: TaskFilter;
   onFilter: (filter: TaskFilter) => void;
-  showTip: boolean;
-  onDismissTip: () => void;
+  showQuote: boolean;
+  onDismissQuote: () => void;
 }) {
   return (
-    <View>
-      <View style={{ marginTop: 24, marginBottom: 16 }}>
-        <Text
-          style={{ fontSize: 30, fontWeight: "700", color: colors.primary }}
-        >
-          PRITECH Tasks
-        </Text>
-        <Text style={{ fontSize: 14, color: colors.onSurfaceVariant }}>
-          Manage your daily tasks
-        </Text>
-      </View>
+    <View style={{ paddingTop: 16 }}>
+      {total > 0 && (
+        <View style={{ marginBottom: 16 }}>
+          <ProgressCard total={total} completed={completed} />
+        </View>
+      )}
 
       <View style={{ marginBottom: 16 }}>
         <SearchBar value={search} onChangeText={onSearch} />
@@ -48,48 +48,10 @@ function ListHeader({
         <FilterChips selected={filter} onSelect={onFilter} />
       </View>
 
-      {/* Productivity tip card */}
-      {showTip && (
-        <View
-          style={{
-            flexDirection: "row",
-            gap: 16,
-            alignItems: "flex-start",
-            padding: 16,
-            marginBottom: 24,
-            borderRadius: 12,
-            borderWidth: 1,
-            borderColor: "rgba(20,112,232,0.2)",
-            backgroundColor: "rgba(20,112,232,0.1)",
-          }}
-        >
-          <MaterialIcons name="lightbulb" size={24} color={colors.secondary} />
-          <View style={{ flex: 1, paddingRight: 20 }}>
-            <Text
-              style={{
-                fontSize: 12,
-                fontWeight: "600",
-                letterSpacing: 1,
-                textTransform: "uppercase",
-                color: colors.secondary,
-                marginBottom: 4,
-              }}
-            >
-              Productivity Tip
-            </Text>
-            <Text style={{ fontSize: 14, color: colors.onSurfaceVariant }}>
-              Break big tasks into smaller steps.
-            </Text>
-          </View>
-
-          {/* Dismiss button — top-right corner */}
-          <Pressable
-            onPress={onDismissTip}
-            hitSlop={8}
-            style={{ position: "absolute", top: 8, right: 8, padding: 4 }}
-          >
-            <MaterialIcons name="close" size={18} color={colors.onSurfaceVariant} />
-          </Pressable>
+      {/* Live motivational quote from a public API */}
+      {showQuote && (
+        <View style={{ marginBottom: 24 }}>
+          <QuoteCard onDismiss={onDismissQuote} />
         </View>
       )}
     </View>
@@ -103,7 +65,9 @@ export function TaskListScreen({
   const { tasks, loading, toggleTask, deleteTask } = useTasks();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<TaskFilter>("all");
-  const [showTip, setShowTip] = useState(true);
+  const [showQuote, setShowQuote] = useState(true);
+
+  const completedCount = tasks.filter((t) => t.completed).length;
 
   // Apply the status filter, then the search query.
   const visibleTasks = useMemo(() => {
@@ -139,12 +103,14 @@ export function TaskListScreen({
             tasks={visibleTasks}
             header={
               <ListHeader
+                total={tasks.length}
+                completed={completedCount}
                 search={search}
                 onSearch={setSearch}
                 filter={filter}
                 onFilter={setFilter}
-                showTip={showTip}
-                onDismissTip={() => setShowTip(false)}
+                showQuote={showQuote}
+                onDismissQuote={() => setShowQuote(false)}
               />
             }
             onTaskPress={(task) =>

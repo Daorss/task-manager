@@ -12,6 +12,8 @@ export const colors = {
   surfaceContainerHighest: "#e1e3e4",
   secondary: "#0058bd",
   secondaryContainer: "#1470e8",
+  accent: "#00978c",
+  accentSurface: "#d8f3ef",
   activeBadgeBg: "#d8e2ff",
   activeBadgeText: "#001a41",
   white: "#ffffff",

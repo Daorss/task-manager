@@ -27,9 +27,7 @@ export function TaskCard({
         alignItems: "center",
         gap: 16,
         backgroundColor: colors.cardBg,
-        borderWidth: 1,
-        borderColor: colors.outlineVariant,
-        borderRadius: 12,
+        borderRadius: 16,
         padding: 16,
         opacity: done ? 0.8 : 1,
       }}

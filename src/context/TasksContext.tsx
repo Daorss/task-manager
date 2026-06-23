@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { Task } from "../types/task";
+import { fetchSeedTasks } from "../api/tasksApi";
 import { loadTasks, saveTasks } from "../storage/taskStorage";
 import { formatDate } from "../utils/date";
 
@@ -21,12 +22,24 @@ export function TasksProvider({ children }: { children: ReactNode }) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Load saved tasks once when the app starts.
+  // On startup: use saved tasks if we have any, otherwise (very first launch)
+  // seed the list from the public API.
   useEffect(() => {
-    loadTasks().then((stored) => {
-      setTasks(stored);
-      setLoading(false);
-    });
+    (async () => {
+      try {
+        const stored = await loadTasks();
+        if (stored !== null) {
+          setTasks(stored);
+        } else {
+          setTasks(await fetchSeedTasks());
+        }
+      } catch (e) {
+        console.warn("Failed to initialise tasks", e);
+        setTasks([]);
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, []);
 
   // Save whenever tasks change (but not during the initial load).
