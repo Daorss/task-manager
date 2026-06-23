@@ -4,6 +4,12 @@ A simple task manager built with React Native (Expo). Create, complete, and
 delete personal tasks — with search, filtering, local persistence, and a clean
 animated UI.
 
+## Screenshots
+
+| Home                                                     | Add Task                                                     | Task Details                                                         |
+| -------------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------- |
+| <img src="docs/screenshots/main-screen.png" width="220"> | <img src="docs/screenshots/add-task-screen.png" width="220"> | <img src="docs/screenshots/description-task-screen.png" width="220"> |
+
 ## Features
 
 - **Task list** with title, description, status, and created date

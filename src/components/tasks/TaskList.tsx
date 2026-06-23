@@ -7,22 +7,19 @@ import { Task } from "../../types/task";
 import { EmptyState } from "../common/EmptyState";
 import { TaskCard } from "./TaskCard";
 
-// Enter: rise + fade in. Elevation stays at 0 while the card is translucent
-// (Android draws an elevated view's shadow as a gray box unless its background
-// is fully opaque), then ramps to the resting shadow once it's opaque.
+// Enter: rise + fade in. The card's depth comes from `boxShadow` (not Android
+// `elevation`), so the shadow fades together with the card and there's no gray
+// shadow box while it's translucent.
 const fadeInUp = new Keyframe({
-  0: { opacity: 0, transform: [{ translateY: 12 }], elevation: 0 },
-  60: { opacity: 1, transform: [{ translateY: 0 }], elevation: 0 },
-  100: { opacity: 1, transform: [{ translateY: 0 }], elevation: 2 },
+  0: { opacity: 0, transform: [{ translateY: 12 }] },
+  100: { opacity: 1, transform: [{ translateY: 0 }] },
 });
 
-// Exit: fade out early, then keep sliding right. Elevation is held at 0 the
-// whole time so the leaving card fades cleanly instead of flashing a gray
-// shadow box as its background turns translucent.
+// Exit: fade out early, then keep sliding right.
 const slideOutRight = new Keyframe({
-  0: { opacity: 1, transform: [{ translateX: 0 }], elevation: 0 },
-  50: { opacity: 0, transform: [{ translateX: 40 }], elevation: 0 },
-  100: { opacity: 0, transform: [{ translateX: 120 }], elevation: 0 },
+  0: { opacity: 1, transform: [{ translateX: 0 }] },
+  50: { opacity: 0, transform: [{ translateX: 40 }] },
+  100: { opacity: 0, transform: [{ translateX: 120 }] },
 });
 
 // The scrollable list of task cards. The screen's header content (title,
