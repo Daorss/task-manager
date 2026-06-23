@@ -3,16 +3,26 @@ import { Alert, Pressable, ScrollView, Text, View } from "react-native";
 import { colors } from "../constants/colors";
 import { Layout } from "../components/layout/Layout";
 import { ScreenHeader } from "../components/layout/ScreenHeader";
+import { useTasks } from "../hooks/useTasks";
 import { RootStackScreenProps } from "../navigation/types";
 
-// Read-only details for a single task (passed via route params).
-// Toggling/deleting just close the screen for now — they persist once the
-// shared task store exists.
+// Read-only details for a single task, looked up live from the store by id.
 export function TaskDetailsScreen({
   navigation,
   route,
 }: RootStackScreenProps<"TaskDetails">) {
-  const { task } = route.params;
+  const { tasks, toggleTask, deleteTask } = useTasks();
+  const task = tasks.find((t) => t.id === route.params.id);
+
+  // The task may be gone (e.g. just deleted) while the screen animates out.
+  if (!task) {
+    return (
+      <Layout>
+        <ScreenHeader title="Task Details" onBack={() => navigation.goBack()} />
+      </Layout>
+    );
+  }
+
   const done = task.completed;
 
   const onDelete = () =>
@@ -21,7 +31,10 @@ export function TaskDetailsScreen({
       {
         text: "Delete",
         style: "destructive",
-        onPress: () => navigation.goBack(),
+        onPress: () => {
+          deleteTask(task.id);
+          navigation.goBack();
+        },
       },
     ]);
 
@@ -134,7 +147,7 @@ export function TaskDetailsScreen({
                 color: colors.onSurfaceVariant,
               }}
             >
-              {task.description}
+              {task.description || "No description."}
             </Text>
           </View>
         </View>
@@ -149,6 +162,7 @@ export function TaskDetailsScreen({
           }}
         >
           <Pressable
+            onPress={() => toggleTask(task.id)}
             style={{
               flexDirection: "row",
               alignItems: "center",

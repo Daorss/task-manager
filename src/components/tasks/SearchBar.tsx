@@ -2,8 +2,14 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { TextInput, View } from "react-native";
 import { colors } from "../../constants/colors";
 
-// Search input row. Value/onChange wiring comes later.
-export function SearchBar() {
+// Search input row. Controlled by the screen via value/onChangeText.
+export function SearchBar({
+  value,
+  onChangeText,
+}: {
+  value: string;
+  onChangeText: (text: string) => void;
+}) {
   return (
     <View
       style={{
@@ -20,6 +26,8 @@ export function SearchBar() {
     >
       <MaterialIcons name="search" size={20} color={colors.onSurfaceVariant} />
       <TextInput
+        value={value}
+        onChangeText={onChangeText}
         placeholder="Search tasks..."
         placeholderTextColor={colors.outline}
         style={{ flex: 1, fontSize: 14, color: colors.onSurface }}

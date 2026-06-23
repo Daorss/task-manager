@@ -9,9 +9,13 @@ import { Badge } from "../common/Badge";
 export function TaskCard({
   task,
   onPress,
+  onToggle,
+  onDelete,
 }: {
   task: Task;
   onPress?: () => void;
+  onToggle?: () => void;
+  onDelete?: () => void;
 }) {
   const done = task.completed;
 
@@ -32,6 +36,8 @@ export function TaskCard({
     >
       {/* Checkbox */}
       <Pressable
+        onPress={onToggle}
+        hitSlop={8}
         style={{
           width: 24,
           height: 24,
@@ -89,7 +95,7 @@ export function TaskCard({
       </View>
 
       {/* Delete */}
-      <Pressable style={{ padding: 8 }}>
+      <Pressable onPress={onDelete} hitSlop={8} style={{ padding: 8 }}>
         <MaterialIcons name="delete" size={22} color={colors.outline} />
       </Pressable>
     </Pressable>

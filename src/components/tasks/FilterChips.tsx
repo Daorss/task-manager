@@ -1,26 +1,38 @@
 import { Pressable, Text, View } from "react-native";
 import { colors } from "../../constants/colors";
 
-const FILTERS = ["All", "Active", "Completed"];
+export type TaskFilter = "all" | "active" | "completed";
 
-// All / Active / Completed chip row. Selection logic comes later;
-// "All" is shown as selected for now to preview the layout.
-export function FilterChips() {
+const FILTERS: { label: string; value: TaskFilter }[] = [
+  { label: "All", value: "all" },
+  { label: "Active", value: "active" },
+  { label: "Completed", value: "completed" },
+];
+
+// All / Active / Completed chip row. Controlled by the screen.
+export function FilterChips({
+  selected,
+  onSelect,
+}: {
+  selected: TaskFilter;
+  onSelect: (filter: TaskFilter) => void;
+}) {
   return (
     <View style={{ flexDirection: "row", gap: 8 }}>
-      {FILTERS.map((label) => {
-        const selected = label === "All";
+      {FILTERS.map(({ label, value }) => {
+        const active = value === selected;
         return (
           <Pressable
-            key={label}
+            key={value}
+            onPress={() => onSelect(value)}
             style={{
               paddingHorizontal: 16,
               paddingVertical: 6,
               borderRadius: 999,
-              backgroundColor: selected
+              backgroundColor: active
                 ? colors.primaryContainer
                 : colors.surfaceContainer,
-              borderWidth: selected ? 0 : 1,
+              borderWidth: active ? 0 : 1,
               borderColor: colors.outlineVariant,
             }}
           >
@@ -28,7 +40,7 @@ export function FilterChips() {
               style={{
                 fontSize: 12,
                 fontWeight: "600",
-                color: selected
+                color: active
                   ? colors.onPrimaryContainer
                   : colors.onSurfaceVariant,
               }}

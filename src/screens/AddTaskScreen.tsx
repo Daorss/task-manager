@@ -1,12 +1,29 @@
 import { MaterialIcons } from "@expo/vector-icons";
+import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { colors } from "../constants/colors";
 import { Layout } from "../components/layout/Layout";
 import { ScreenHeader } from "../components/layout/ScreenHeader";
+import { useTasks } from "../hooks/useTasks";
 import { RootStackScreenProps } from "../navigation/types";
 
+// Form to create a new task: title (required) + description, then save.
 export function AddTaskScreen({ navigation }: RootStackScreenProps<"AddTask">) {
+  const { addTask } = useTasks();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [error, setError] = useState("");
+
   const goBack = () => navigation.goBack();
+
+  const onCreate = () => {
+    if (!title.trim()) {
+      setError("Title is required");
+      return;
+    }
+    addTask(title, description);
+    navigation.goBack();
+  };
 
   return (
     <Layout>
@@ -16,10 +33,9 @@ export function AddTaskScreen({ navigation }: RootStackScreenProps<"AddTask">) {
         contentContainerStyle={{ padding: 16, gap: 24 }}
         keyboardShouldPersistTaps="handled"
       >
+        {/* Intro */}
         <View>
-          <Text
-            style={{ fontSize: 30, fontWeight: "700", color: colors.primary }}
-          >
+          <Text style={{ fontSize: 30, fontWeight: "700", color: colors.primary }}>
             New Journey
           </Text>
           <Text style={{ fontSize: 14, color: colors.onSurfaceVariant }}>
@@ -27,17 +43,17 @@ export function AddTaskScreen({ navigation }: RootStackScreenProps<"AddTask">) {
           </Text>
         </View>
 
+        {/* Title field */}
         <View style={{ gap: 8 }}>
-          <Text
-            style={{
-              fontSize: 12,
-              fontWeight: "600",
-              color: colors.onSurfaceVariant,
-            }}
-          >
+          <Text style={{ fontSize: 12, fontWeight: "600", color: colors.onSurfaceVariant }}>
             Task Title
           </Text>
           <TextInput
+            value={title}
+            onChangeText={(text) => {
+              setTitle(text);
+              if (error) setError("");
+            }}
             placeholder="Enter title"
             placeholderTextColor={colors.outlineVariant}
             style={{
@@ -46,24 +62,27 @@ export function AddTaskScreen({ navigation }: RootStackScreenProps<"AddTask">) {
               fontSize: 16,
               backgroundColor: colors.cardBg,
               borderWidth: 1,
-              borderColor: colors.outlineVariant,
+              borderColor: error ? colors.error : colors.outlineVariant,
               borderRadius: 8,
               color: colors.onSurface,
             }}
           />
+          {error ? (
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+              <MaterialIcons name="error" size={14} color={colors.error} />
+              <Text style={{ fontSize: 11, color: colors.error }}>{error}</Text>
+            </View>
+          ) : null}
         </View>
 
+        {/* Description field */}
         <View style={{ gap: 8 }}>
-          <Text
-            style={{
-              fontSize: 12,
-              fontWeight: "600",
-              color: colors.onSurfaceVariant,
-            }}
-          >
+          <Text style={{ fontSize: 12, fontWeight: "600", color: colors.onSurfaceVariant }}>
             Description
           </Text>
           <TextInput
+            value={description}
+            onChangeText={setDescription}
             placeholder="Enter details"
             placeholderTextColor={colors.outlineVariant}
             multiline
@@ -82,9 +101,10 @@ export function AddTaskScreen({ navigation }: RootStackScreenProps<"AddTask">) {
           />
         </View>
 
+        {/* Actions */}
         <View style={{ gap: 12, paddingTop: 16 }}>
           <Pressable
-            onPress={goBack}
+            onPress={onCreate}
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -96,9 +116,7 @@ export function AddTaskScreen({ navigation }: RootStackScreenProps<"AddTask">) {
             }}
           >
             <MaterialIcons name="add-task" size={20} color={colors.white} />
-            <Text
-              style={{ fontSize: 16, fontWeight: "700", color: colors.white }}
-            >
+            <Text style={{ fontSize: 16, fontWeight: "700", color: colors.white }}>
               Create Task
             </Text>
           </Pressable>

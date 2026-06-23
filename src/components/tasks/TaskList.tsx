@@ -11,21 +11,32 @@ export function TaskList({
   tasks,
   header,
   onTaskPress,
+  onToggleTask,
+  onDeleteTask,
+  onCreateTask,
 }: {
   tasks: Task[];
   header?: ReactElement;
   onTaskPress?: (task: Task) => void;
+  onToggleTask?: (id: string) => void;
+  onDeleteTask?: (id: string) => void;
+  onCreateTask?: () => void;
 }) {
   return (
     <FlatList
       data={tasks}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <TaskCard task={item} onPress={() => onTaskPress?.(item)} />
+        <TaskCard
+          task={item}
+          onPress={() => onTaskPress?.(item)}
+          onToggle={() => onToggleTask?.(item.id)}
+          onDelete={() => onDeleteTask?.(item.id)}
+        />
       )}
       ListHeaderComponent={header}
       ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
-      ListEmptyComponent={<EmptyState />}
+      ListEmptyComponent={<EmptyState onCreate={onCreateTask} />}
       contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 120 }}
       showsVerticalScrollIndicator={false}
     />
