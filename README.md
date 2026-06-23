@@ -21,9 +21,7 @@ animated UI.
 - **Filter** by All / Active / Completed
 - **Local persistence** with AsyncStorage — your tasks survive an app restart
 - **Public API** — a live **Daily Motivation** card fetches a random quote from
-  [ZenQuotes](https://zenquotes.io) (tap refresh for a new one); the list is also
-  seeded from [JSONPlaceholder](https://jsonplaceholder.typicode.com/todos) on a
-  fresh install
+  [ZenQuotes](https://zenquotes.io) (tap refresh for a new one)
 - **Progress card** + smooth list animations (Reanimated)
 
 ## Tech stack
@@ -39,7 +37,7 @@ animated UI.
 ```
 App.tsx                  # providers (safe-area, tasks, navigation)
 src/
-├── api/                 # public API calls (fetch + map to Task)
+├── api/                 # public API calls (motivational quotes)
 ├── components/
 │   ├── common/          # generic, reusable (Badge, EmptyState)
 │   ├── layout/          # app shell (Layout, AppBar, Fab, ScreenHeader)
@@ -60,7 +58,7 @@ src/
 
 - [Node.js](https://nodejs.org/) (LTS)
 - An Android emulator (via Android Studio) or a physical device
-- Internet connection on first launch (to seed tasks from the API)
+- Internet connection (to load the Daily Motivation quote)
 
 ### 1. Install dependencies
 
@@ -89,7 +87,6 @@ This starts the Metro bundler and opens the app on your emulator/device.
 
 ### 3. Use it
 
-- First launch fetches a few sample tasks from the public API.
 - Tap **+** to add a task, the **checkbox** to complete it, a **card** to open
   details, and the **trash icon** to delete.
 - Everything you do is saved locally and restored next time you open the app.
@@ -98,5 +95,5 @@ This starts the Metro bundler and opens the app on your emulator/device.
 
 - **"Unable to resolve …" or a stale screen after pulling changes** — restart
   Metro with a clean cache: `npx expo start -c`.
-- **Tasks won't seed** — the seed only runs on a truly fresh install. Clear the
-  app's stored data (emulator: App info → Storage → Clear storage) and relaunch.
+- **Want a clean slate** — clear the app's stored data (emulator: App info →
+  Storage → Clear storage) and relaunch to start with an empty task list.
